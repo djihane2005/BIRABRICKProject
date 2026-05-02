@@ -1,6 +1,6 @@
 const { Worker } = require('bullmq');
-const { sendContactEmail } = require('./emailService');
-const logger = require('./logger');
+const { sendContactEmail } = require('../services/emailService');
+const logger = require('../utils/logger');
 require('dotenv').config();
 
 const connection = {

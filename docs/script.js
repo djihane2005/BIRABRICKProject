@@ -1,3 +1,7 @@
+// --- CONFIGURATION DES URLS ---
+// Modification : Utilisation de l'URL Render pour la production
+const API_BASE_URL = 'https://birabrickproject.onrender.com';
+
 // Toast Notification Utility
 function showToast(message, type = 'error') {
     const container = document.getElementById('toast-container');
@@ -70,10 +74,10 @@ const csrfTokenField = document.getElementById('csrf-token-field');
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        
-        const response = await fetch('http://localhost:3000/api/csrf-token', {
-        credentials: 'include' // Obligatoire pour les cookies signés
-});
+        // Modification : Appel à l'URL de production Render
+        const response = await fetch(`${API_BASE_URL}/api/csrf-token`, {
+            credentials: 'include' // Obligatoire pour les cookies signés
+        });
         
         const data = await response.json();
         csrfToken = data.csrfToken;
@@ -123,7 +127,8 @@ if (contactForm) {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/contact', {
+            // Modification : Envoi vers l'URL de production Render
+            const response = await fetch(`${API_BASE_URL}/api/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -202,6 +207,7 @@ if (scrollToTopBtn) {
         });
     });
 }
+
 // --- GESTION DE LA FAQ BIRABRICK ---
 document.addEventListener('DOMContentLoaded', () => {
     const faqToggles = document.querySelectorAll('.faq-toggle');

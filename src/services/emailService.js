@@ -1,41 +1,46 @@
-const nodemailer = require('nodemailer');
-const ejs = require('ejs');
-const path = require('path');
-const logger = require('./logger');
+const nodemailer = require('nodemailer'); //[cite: 6]
+const ejs = require('ejs'); //[cite: 6]
+const path = require('path'); //[cite: 6]
+
+// --- MODIFICATION : Chemin vers le logger dans src/utils/ ---
+// On utilise '../' pour sortir de 'services' et entrer dans 'utils'
+const logger = require('../utils/logger'); 
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Utilise le service prédéfini pour Gmail
+    service: 'gmail', //[cite: 6]
     auth: {
-        user: process.env.EMAIL_USER, // Votre adresse Gmail
-        pass: process.env.EMAIL_PASS  // Votre "Mot de passe d'application"
+        user: process.env.EMAIL_USER, //[cite: 6]
+        pass: process.env.EMAIL_PASS  //[cite: 6]
     },
 });
 
 /**
- * Sends a contact notification email
- * @param {Object} data - Form data (name, email, projectType, message)
+ * Envoie un e-mail de notification de contact
+ * @param {Object} data - Données du formulaire (name, email, projectType, message)
  */
 const sendContactEmail = async (data) => {
-    const { name, email, projectType, message } = data;
+    const { name, email, projectType, message } = data; //[cite: 6]
 
-    // Render the EJS template with the provided data
+    // --- MODIFICATION : Chemin vers le template EJS ---
+    // 'path.join(__dirname, '..', ...)' permet de sortir de 'services' 
+    // pour trouver le dossier 'templates' à la racine de 'src'
     const emailHtml = await ejs.renderFile(
-        path.join(__dirname, 'templates', 'contactEmail.ejs'),
+        path.join(__dirname, '..', 'templates', 'contactEmail.ejs'),
         { name, email, projectType, message }
     );
 
-    logger.info('Preparing to send contact email to %s', process.env.EMAIL_USER);
+    logger.info('Preparing to send contact email to %s', process.env.EMAIL_USER); 
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_USER, // Recipient address
-        subject: `New Contact Form Submission from ${name}`,
-        html: emailHtml, // Use the rendered HTML from the EJS template
+        from: process.env.EMAIL_USER, 
+        to: process.env.EMAIL_USER, 
+        subject: `New Contact Form Submission from ${name}`, 
+        html: emailHtml, 
     };
 
-    return transporter.sendMail(mailOptions);
+    return transporter.sendMail(mailOptions); 
 };
 
 module.exports = {
     sendContactEmail
-};
+}; 
