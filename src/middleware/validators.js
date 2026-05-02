@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const logger = require('./logger');
+const logger = require('../utils/logger');
 
 const contactValidationRules = [
     body('name')

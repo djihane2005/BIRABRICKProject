@@ -1,19 +1,16 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const app = express();
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const path = require('path'); // Ajouté pour gérer les chemins proprement
+const path = require('path');
+const fs = require('fs');
 
-// --- CHEMINS MIS À JOUR ---
-const logger = require('./utils/logger'); // Déplacé dans src/utils/
-const { contactValidationRules, validate } = require('./middleware/validators'); // Déplacé dans src/middleware/
-const contactControllerFactory = require('./controllers/contactController'); // Déplacé dans src/controllers/
-const swaggerDocument = YAML.load(path.join(__dirname, 'config/swagger.yaml')); // Déplacé dans src/config/
+console.log("Démarrage du serveur...");
+console.log("Contenu du dossier actuel (src) :", fs.readdirSync(__dirname));
+
+// Vérifiez bien que ces dossiers existent sur GitHub :
+const logger = require('./utils/logger');
+const { contactValidationRules, validate } = require('./middleware/validators');
+const contactControllerFactory = require('./controllers/contactController');
+const swaggerDocument = require('yamljs').load(path.join(__dirname, 'config/swagger.yaml'));
 
 const PORT = process.env.PORT || 3000; // Utilise le port de l'hébergeur (Render/Railway) ou 3000
 
