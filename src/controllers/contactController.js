@@ -1,8 +1,10 @@
-const emailService = require('./emailService'); // Importez votre service d'e-mail
-const logger = require('./logger'); // Importez votre logger professionnel
+// --- CORRECTION DES CHEMINS ---
+// On utilise '../' pour sortir de 'controllers' et entrer dans les bons dossiers
+const emailService = require('../services/emailService'); 
+const logger = require('../utils/logger'); 
 
 const contactControllerFactory = () => {
-    // Note : On ne reçoit plus "emailQueue" car on n'utilise plus Redis
+    // Note : On ne reçoit plus "emailQueue" car on n'utilise plus Redis[cite: 2]
     const contactFormSubmission = async (req, res) => {
         try {
             const { name, email, subject, message, projectType } = req.body;

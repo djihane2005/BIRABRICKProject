@@ -10,7 +10,7 @@ console.log("Contenu du dossier actuel (src) :", fs.readdirSync(__dirname));
 const logger = require('./utils/logger');
 const { contactValidationRules, validate } = require('./middleware/validators');
 const contactControllerFactory = require('./controllers/contactController');
-const swaggerDocument = require('yamljs').load(path.join(__dirname, 'config/swagger.yaml'));
+const swaggerDocument = YAML.load(path.join(__dirname, 'middleware/config/swagger.yaml'));
 
 const PORT = process.env.PORT || 3000; // Utilise le port de l'hébergeur (Render/Railway) ou 3000
 
