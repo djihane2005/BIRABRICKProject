@@ -1,5 +1,4 @@
-const { contactValidationRules, validate } = require('../../validators');
-
+const { contactValidationRules, validate } = require('../src/middleware/validators');
 const mockRequest = (body) => ({ body, ip: '127.0.0.1' });
 const mockResponse = () => {
     const res = {};

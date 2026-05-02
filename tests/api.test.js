@@ -1,7 +1,7 @@
 const request = require('supertest');
-const { app, server } = require('../../server');
+const { app, server } = require('../src/server');
 
-// On définit un secret pour les tests (doit correspondre à celui utilisé par le middleware en mode test)
+// On définit un secret pour les tests 
 process.env.COOKIE_SECRET = 'test_secret_123';
 
 afterAll((done) => {
@@ -35,10 +35,10 @@ describe('API Integration Tests', () => {
     test('POST /api/contact should fail with invalid validation', async () => {
         const response = await request(app)
             .post('/api/contact')
-            .set('Cookie', cookies) // Envoie le cookie signé récupéré précédemment[cite: 18]
+            .set('Cookie', cookies) 
             .send({ 
                 csrfToken, 
-                name: 'D' // Nom trop court pour la validation[cite: 18]
+                name: 'D' 
             });
         
         expect(response.status).toBe(400);

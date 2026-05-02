@@ -1,9 +1,9 @@
-const { emailProcessor } = require('../../emailWorker');
-const { sendContactEmail } = require('../../emailService');
-const logger = require('../../logger');
+const { emailProcessor } = require('../src/workers/emailWorker');
+const { sendContactEmail } = require('../src/services/emailService');
+const logger = require('../src/utils/logger');
 
-jest.mock('../../emailService');
-jest.mock('../../logger');
+jest.mock('../src/services/emailService');
+jest.mock('../src/utils/logger');
 
 describe('Email Worker Processor Unit Tests', () => {
     beforeEach(() => {

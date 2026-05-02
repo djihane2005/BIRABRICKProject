@@ -1,4 +1,4 @@
-const { sendContactEmail } = require('../../emailService');
+const { sendContactEmail } = require('../src/services/emailService');
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 
@@ -13,14 +13,14 @@ describe('Email Service Unit Tests', () => {
     ejs.renderFile.mockResolvedValue('<html>HTML CONTENT</html>');
 
     test('Should render template and call sendMail', async () => {
-        const data = { name: 'Djihane', email: 'djihane@test.com', projectType: 'Professional', message: 'Hello' };
+        const data = { name: 'Djihane', email: 'benfoddadjihane66@gmail.com', projectType: 'Professional', message: 'Hello' };
         
         await sendContactEmail(data);
 
         expect(ejs.renderFile).toHaveBeenCalled();
         expect(mockTransporter.sendMail).toHaveBeenCalledWith(
             expect.objectContaining({
-                subject: expect.stringContaining('Djihane'), // Vérifie que le nom est dans le sujet[cite: 19]
+                subject: expect.stringContaining('Djihane'),
                 html: '<html>HTML CONTENT</html>'
             })
         );
