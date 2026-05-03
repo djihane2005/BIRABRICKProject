@@ -11,6 +11,9 @@ const YAML = require('yamljs');
 
 const app = express();
 
+// Nécessaire pour Render car il utilise un proxy inverse
+app.set('trust proxy', 1);
+
 // Imports locaux
 const logger = require('./utils/logger');
 const { contactValidationRules, validate } = require('./middleware/validators');
@@ -37,8 +40,10 @@ const { contactFormSubmission } = contactControllerFactory();
 // Middlewares
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(cors({
-    origin: 'https://birabrick.netlify.app',
-    credentials: true,
+    origin: 'https://birabrick.netlify.app', // Ton URL Netlify exacte
+    credentials: true, // Autorise l'envoi des cookies/tokens
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'x-csrf-token']
 }));
 app.use(express.json());
 app.use(helmet());
@@ -48,14 +53,19 @@ app.get('/api/csrf-token', (req, res) => {
     const csrfToken = require('crypto').randomBytes(32).toString('hex');
     res.cookie('_csrf_token', csrfToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax',
+        secure: true, // Obligatoire pour HTTPS (Render/Netlify)
+        sameSite: 'None', // Nécessaire pour le cross-origin entre Render et Netlify
         signed: true,
     });
     res.json({ csrfToken });
 });
 
-app.post('/api/contact', contactLimiter, contactValidationRules, validate, asyncHandler(contactFormSubmission));
+app.post('/api/contact', 
+    contactLimiter, 
+    contactValidationRules, 
+    validate, 
+    contactFormSubmission);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Gestion des erreurs
